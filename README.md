@@ -153,8 +153,8 @@ Update the canvas. Pass source as boolean to draw the source canvas.
 Save the changes to the source (does not update the file, just the source of the instance).  
 **DOM-based:** Not available.
 
-### Reset()	 -> this  
-`Reset()	 -> this` 
+### Reset   
+`Reset()	 -> this`  
 Reset any changes to the source.  
 **DOM-based:** Not available.
 
