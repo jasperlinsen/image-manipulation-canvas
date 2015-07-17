@@ -63,15 +63,24 @@ Important to note is that if the `autoUpdate` option is passed as `false`, queue
 After that, it is simple to chain the preferred manipulations:
 
 ```javascript
-var canvasImages = ImageManipulation.Init();
-canvasImages.forEach(function(Image){
-	Image.Desaturate(70);
+var myImage = new ImageManipulation.Canvas({
+	image: "path/to/image.jpg",
+	callback: function(Image){
+		myImage.Desaturate(20).Channel('r').Blur(2).DOM(document.body);
+	}
 });
 ```
 
 ### Combining Both
 
 You can, however, combine both if you want to, as the `ImageManipulation.Init()` static functions returns an array of `ImageManipulation.Canvas` objects. All these support the same features as the purely javascript based ones (they are the same instances) but they default to Queuing as no `callback` can be defined in the DOM.
+
+```javascript
+var canvasImages = ImageManipulation.Init();
+canvasImages.forEach(function(Image){
+	Image.Desaturate(70);
+});
+```
 
 ## Initialiser Options
 
