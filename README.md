@@ -80,91 +80,95 @@ You can, however, combine both if you want to, as the `ImageManipulation.Init()`
 ## Initialiser Options
 
 ### image
-_[String, !required]_
-Path to the image.
+`[String, !required]`  
+Path to the image.  
 **DOM-based:** Uses either `data-src` or `src` attribute in DOM element.
 
 ### callback
-_[Function]_
+`[Function]`  
 Path to the image. Receives 1 argument containing the ImageManipulation.Canvas
 **DOM-based:** Uses either `data-src` or `src` attribute in DOM element.
 
-### development
-_[Function || throw]_
-Function to pass error messages to. Defaults to `throw`. Receives 1 argument containing the message string.
+### development  
+`[Function || throw]`  
+Function to pass error messages to. Defaults to `throw`. Receives 1 argument containing the message string.  
 **DOM-based:** Will only `throw` errors.
 
-### className 
-_[String]_
-Define classes that the canvas should inherit.
+### className  
+`[String]`  
+Define classes that the canvas should inherit.  
 **DOM-based:** Defaults to classes applied to DOM element.
 
 ### autoUpdate
-_[Bool || true]_
-Set if you want to image to automatically update upon changes or only when calling `Draw()`.
+`[Bool || true]`  
+Set if you want to image to automatically update upon changes or only when calling `Draw()`.  
 **DOM-based:** Cannot be changed DOM based.
 
 ## ImageManipulation.Canvas Manipulations
 
-### Blur([radius:Int:n%2=0.canvas]) -> this
+### Blur  
+`Blur([radius:Int:n%2=0.canvas]) -> this`  
 Blurs the image by the given radius.
 **DOM-based:** `data-attribute="Blur(radius)"`
 
-### GrayScale([forHumans:Bool]) -> this
+### GrayScale  
+`GrayScale([forHumans:Bool]) -> this`  
 Desaturate the image 100% (equals `Desaturate(100)`). Pass `forHumans` to adjust the graytones to be more palatable for the human eye (more green, less red and blue).
 **DOM-based:** `data-attribute="GrayScale"`
 
-### Desaturate(amount:Int:0<n<100) -> this
+### Desaturate  
+`Desaturate(amount:Int:0<n<100) -> this`  
 Equalise the r,g,b values by the passed percentage based amount.
 **DOM-based:** `data-attribute="Desaturate(amount)"`
 
-### Channel(channel:String:=r||g||b||a) -> void
+### Channel  
+`Channel(channel:String:=r||g||b||a) -> void`  
 Only display one of the color channels.
 **DOM-based:** `data-attribute="Channel(r)"`
 
 ## ImageManipulation.Canvas Core Functions
 
 ### Init  
-Init([copy:Imagemanipulation.canvas]) -> void  
+`Init([copy:Imagemanipulation.canvas]) -> void`  
 gets called automatically. Initialises all values and resources.`Draw()`.  
 **DOM-based:** Automatically called.
 
 ### Copy  
-Copy()	 -> ImageManipulation  
+`Copy()	 -> ImageManipulation`  
 Returns a new copy of this instance.  
 **DOM-based:** Not available.
 
 ### Draw  
-Draw([source:Bool])	 -> this  
+`Draw([source:Bool])	 -> this`  
 Update the canvas. Pass source as boolean to draw the source canvas.  
 **DOM-based:** Not available.
 
 ### Apply  
-Apply()	 -> this  
+`Apply()	 -> this`  
 Save the changes to the source (does not update the file, just the source of the instance).  
 **DOM-based:** Not available.
 
 ### Reset()	 -> this  
-Reset()	 -> this  
+`Reset()	 -> this` 
 Reset any changes to the source.  
 **DOM-based:** Not available.
 
 ### Dom  
-DOM([element:< domElement >])	 -> Bool?< canvas >  
+`DOM([element:<domElement>])	 -> Bool?<canvas>`  
 Append the canvas element to the passed element and return `true` _or_ returns the canvas element is no element is passed.  
 **DOM-based:** Not available.
 
 ### Throw  
-Throw(message:String)	 -> this  
+`Throw(message:String)	 -> this`  
 Internal error reporting function.  
 **DOM-based:** Not available.
 
 ### Warn  
-Warn(message:String)	 -> this  
+`Warn(message:String)	 -> this`  
 Internal warning reporting function.  
 **DOM-based:** Not available.
 
 ### isReady  
-isReady([callee:String, withArguments:arguments?Array])	 -> Bool  
+`isReady([callee:String, withArguments:arguments?Array])	 -> Bool`  
 Returns true if ready, false when not. If callee is included, that function name will be added to the queue and executed with the myArguments when the queue gets executed.  
 **DOM-based:** Not available.
