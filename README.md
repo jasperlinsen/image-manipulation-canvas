@@ -1,6 +1,6 @@
-# image-manipulation-canvas
+# Javascript Image Manipulation With Canvas
 
-ImageManipulation is a simple Javascript library that can be used to manipulate images in certain ways by replacing them with canvas elements and manipulating their direct source content. It is in many ways an experiment to learn how to manipulate images and image data itself, but can be very useful to support IE for browser `filter` effects. Over time I hope this can expand to include better ways to redraw images, and to include more effects as well as some basic Computer Vision capabilities.
+ImageManipulation is a simple Javascript library (without dependencies) that can be used to manipulate images in certain ways by replacing them with canvas elements and manipulating their direct source content. It is in many ways an experiment to learn how to manipulate images and image data itself, but can be very useful to support IE for browser `filter` effects. Over time I hope this can expand to include better ways to redraw images, and to include more effects as well as some basic Computer Vision capabilities.
 
 ## Implementation
 
