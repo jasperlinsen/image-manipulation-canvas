@@ -5,13 +5,13 @@
 /************** Canvas ImageManipulation Library ***************/
 /***************************************************************/
 
-"use strict";
-
 var ImageManipulation = {
 	/* Canvas(options:Dictionary)		 -> ImageManipulation.Canvas
 	 * ImageManipulation Canvas constructor */
 	Canvas:		function ImageManipulation(options){
-	
+		
+		"use strict";
+		
 		if(!options) return this;
 	
 		var canvasSupport   = document.createElement('canvas');
@@ -68,18 +68,17 @@ var ImageManipulation = {
 		result 			= new Array();
 		querySelector 	= querySelector || "*[data-manipulate]";
 		elements 		= document.querySelectorAll(querySelector);
-		for(var i = 0; i < elements.length; i++){
-			var element, src;
-			var element = elements.item(i);
-			var src		= element.getAttribute("data-src") || element.getAttribute("src") || false;
-			var className = element.getAttribute("className") || '';
-			if(!src) continue;
-			result.push(new ImageManipulation.Canvas({
+		function create(element){
+			var src			= 
+				element.getAttribute("data-src") || element.getAttribute("src") || false;
+			var className 	= 
+				element.getAttribute("className") || '';
+			if(!src) return false;
+			return new ImageManipulation.Canvas({
 				image: src,
 				className: className,
 				callback: function(Image){
 					element.parentNode.insertBefore(Image.DOM(), element);
-					element.parentNode.removeChild(element);
 					
 					var j = {
 						_j: 1, get string(){
@@ -97,16 +96,24 @@ var ImageManipulation = {
 									? manipulation[1].replace(")", "").split(",")
 									: [];
 						if(Image[manipulation[0]] instanceof Function){
+							console.log(manipulation[0], argument)
 							Image[manipulation[0]].apply(Image, argument);
 						} else {
 							throw("Static @element manipulation ('" + manipulation + "') is not a function.)");
 						}
 					}
+					
+					element.parentNode.removeChild(element);
+					
 				},
 				autoUpdate: true
-			}));
-			return result;
-		};
+			});
+		}
+		for(var i = 0; i < elements.length; i++){
+			var r = create(elements.item(i));
+			if(r) result.push(r);
+		}
+		return result;
 	}
 };
 
@@ -138,7 +145,7 @@ ImageManipulation.Canvas.prototype = {
 			this.inputContext	.drawImage(this.image, 0, 0);
 		}
 		
-		this.source		  = copy.source   || this.inputContext.getImageData(0, 0, this.width, this.height);
+		this.source		  	= copy.source   || this.inputContext.getImageData(0, 0, this.width, this.height);
 		this.resource		= copy.resource || this.inputContext.getImageData(0, 0, this.width, this.height);
 		
 		this.Support.Self   = this;
@@ -148,8 +155,9 @@ ImageManipulation.Canvas.prototype = {
 		if(!copy && this.queue.length){
 			for(var i = 0; i < this.queue.length; i++){
 				if(this.queue[i] && this[this.queue[i][0]] instanceof Function){
-					var args = this.queue[i][1] ? this.queue[i][0] : [];
-					this[this.queue[i][0]].call(this, args);
+					var args = this.queue[i][1] ? this.queue[i][1] : false;
+					if(args) this[this.queue[i][0]].apply(this, args);
+					else this[this.queue[i][0]]();
 					this.queue[i] = false;
 				}
 			}
@@ -161,12 +169,16 @@ ImageManipulation.Canvas.prototype = {
 	Copy:		function(){
 		return new ImageManipulation.Canvas({copy: this});
 	},
-	/* Draw()	 -> this 
+	/* Draw([source:Bool])	 -> this 
 	 * update the canvas. */
-	Draw:		function(){
-		if(this.resource){
+	Draw:		function(source){
+		if(!source && this.resource){
 			this.outputContext.putImageData(new ImageData(
 				this.resource.data, this.width, this.height
+			), 0, 0);
+		} else if(source){
+			this.outputContext.putImageData(new ImageData(
+				source.data, this.width, this.height
 			), 0, 0);
 		}
 		return this;
@@ -174,15 +186,16 @@ ImageManipulation.Canvas.prototype = {
 	/* Apply()	 -> this 
 	 * save the changes to the source. */
 	Apply:		function(){
-		this.source = this.resource;
+		this.source 	= this.outputContext.getImageData(0, 0, this.width, this.height);
+		this.resource 	= this.outputContext.getImageData(0, 0, this.width, this.height);
 		if(this.autoUpdate) this.Draw();
 		return this;
 	},
 	/* Reset()	 -> this
 	 * reset the image to the original values (undo all manipulations). */
 	Reset:		function(){
-		this.resource = this.source;
-		if(this.autoUpdate) this.Draw();
+		this.resource = this.inputContext.getImageData(0, 0, this.width, this.height);
+		if(this.autoUpdate) this.Draw(this.source);
 		return this;
 	},
 	/* DOM(element?:<dom>)	 -> Bool?<canvas>
@@ -245,18 +258,21 @@ ImageManipulation.Canvas.prototype = {
 		if(radius%2)
 			return this.Throw("Blur @param radius:Int needs to be even.");
 		
+		radius 		= parseInt(radius, 10);
+		
 		if(radius > 5) 
 			this.Warn("Blur @param radius:Int is large and may cause slowdown.");
 			
 		var blur	 = 1 / ((radius+1) * (radius+1));
-		for(var e = 0; e < this.source.data.length; e+=4){
+		
+		for(var e = 0; e < this.resource.data.length; e+=4){
 			var a = [0,0,0,255];
 			for(var y = -radius/2; y <= radius/2; y++){
 			for(var x = -radius/2; x <= radius/2; x++){
 				var position = e - (this.width * y + x) * 4;
 				for(var rgba = 0; rgba < 3; rgba++){
-					if(this.source.data[position+rgba]) 
-						a[rgba] += this.source.data[position+rgba] * blur;
+					if(this.resource.data[position+rgba]) 
+						a[rgba] += this.resource.data[position+rgba] * blur;
 					else a[rgba] += 255 * blur;
 				}
 			}}
@@ -280,18 +296,25 @@ ImageManipulation.Canvas.prototype = {
 	Desaturate:	function(percentage, forHumans){
 	
 		if(!this.isReady('Desaturate', arguments)) return;
+	
+		if(!percentage || isNaN(percentage))
+			return this.Throw("Desaturate @param percentage:Int is required.");
+		
+		percentage 		= parseInt(percentage, 10);
+		percentage		= percentage > 100 	? 100 	: percentage;
+		percentage		= percentage < 0 	? 0 	: percentage;
 		
 		forHumans = forHumans
 			? [.3,.4,.3]
 			: [(1/3),(1/3),(1/3)];
 			
-		for(var p = 0; p < this.source.data.length; p+=4){
+		for(var p = 0; p < this.resource.data.length; p+=4){
 			var avg = 0;
 			for(var i = 0; i < 3; i++){
-				avg += this.source.data[p+i] * forHumans[i];
+				avg += this.resource.data[p+i] * forHumans[i];
 			}
 			for(var i = 0; i < 3; i++){
-				this.resource.data[p + i] = Math.round(this.source.data[p + i] + (avg - this.source.data[p + i]) / 100 * percentage);
+				this.resource.data[p + i] = Math.round(this.resource.data[p + i] + (avg - this.resource.data[p + i]) / 100 * percentage);
 			}
 		}
 		if(this.autoUpdate) this.Draw();
@@ -310,11 +333,11 @@ ImageManipulation.Canvas.prototype = {
 		if(channel == 'a') channel = 3;
 		if(channel != 0 && channel != 1 && channel != 2 && channel != 3)
 			return this.Throw('Channel has to be either r, g, b or a');
-		for(var i = 0; i < this.source.data.length; i += 4){
-			var alpha				= channel == 3 ? this.source.data[i+3]	 : 0;
-			this.resource.data[i]	 = channel == 0 ? this.source.data[i]		 : alpha;
-			this.resource.data[i+1] = channel == 1 ? this.source.data[i+1]	 : alpha;
-			this.resource.data[i+2] = channel == 2 ? this.source.data[i+2]	 : alpha;
+		for(var i = 0; i < this.resource.data.length; i += 4){
+			var alpha				= channel == 3 ? this.resource.data[i+3]	 : 0;
+			this.resource.data[i]	= channel == 0 ? this.resource.data[i]		 : alpha;
+			this.resource.data[i+1] = channel == 1 ? this.resource.data[i+1]	 : alpha;
+			this.resource.data[i+2] = channel == 2 ? this.resource.data[i+2]	 : alpha;
 			this.resource.data[i+3] = 255;
 		}
 		if(this.autoUpdate) this.Draw();

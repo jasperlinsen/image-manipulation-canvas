@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+	<title>imageManipulation | Canvas.Desaturate()</title>
+	<script type="text/javascript" src="../../build/imageManipulation.min.js"></script>
+	<link rel="stylesheet" href="../resources/style.css" type="text/css" />
+</head>
+<body>
+	<a href="../">Back</a>
+	<h1>Canvas.Channel()</h1>
+	<script type="text/javascript">
+	var Image;
+	
+	Image = new ImageManipulation.Canvas({image: "../resources/example.png"});
+	
+	//Image.Desaturate(50);
+	Image.DOM(document.body);
+	Image.Channel('r');
+	
+	var br = document.createElement('br');
+		document.body.appendChild(br);
+	
+	var input = document.createElement('select');
+		input.style.width = "200px";
+		document.body.appendChild(input);
+	var option = document.createElement('option');
+		option.setAttribute('value','r');
+		option.setAttribute('selected','true');
+		option.text = "red";
+		input.appendChild(option);
+	var option = document.createElement('option');
+		option.setAttribute('value','g');
+		option.text = "green";
+		input.appendChild(option);
+	var option = document.createElement('option');
+		option.setAttribute('value','b');
+		option.text = "blue";
+		input.appendChild(option);
+	var option = document.createElement('option');
+		option.setAttribute('value','a');
+		option.text = "alpha";
+		input.appendChild(option);
+		
+		input.addEventListener('change', function(event){
+			Image.Reset();
+			Image.Channel(input.value);
+			//Image.Draw(true);
+		});
+	</script>
+</body>
+</html>

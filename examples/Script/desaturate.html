@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+	<title>imageManipulation | Canvas.Desaturate()</title>
+	<script type="text/javascript" src="../../build/imageManipulation.min.js"></script>
+	<link rel="stylesheet" href="../resources/style.css" type="text/css" />
+</head>
+<body>
+	<a href="../">Back</a>
+	<h1>Canvas.Desaturate()</h1>
+	<script type="text/javascript">
+	
+	var Image;
+	
+	Image = new ImageManipulation.Canvas({image: "../resources/example.png"});
+	
+	Image.Desaturate(50);
+	Image.DOM(document.body);
+	
+	var br = document.createElement('br');
+		document.body.appendChild(br);
+	
+	var input = document.createElement('input');
+		input.style.width = "200px";
+		input.setAttribute('type','range');
+		input.setAttribute('max',100);
+		input.setAttribute('min',0);
+		input.setAttribute('value',50);
+		document.body.appendChild(input);
+	var br = document.createElement('br');
+		document.body.appendChild(br);
+	var value = document.createElement('input');
+		value.setAttribute('type','text');
+		value.setAttribute('disabled','true');
+		value.style.width = "200px";
+		value.setAttribute('id','value');
+		value.setAttribute('value','50');
+		document.body.appendChild(value);
+		input.addEventListener('change', function(event){
+			Image.Reset();
+			Image.Desaturate(input.value);
+			value.value = input.value;
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+	<title>imageManipulation | Canvas.DOM()</title>
+	<script type="text/javascript" src="../../build/imageManipulation.min.js"></script>
+	<link rel="stylesheet" href="../resources/style.css" type="text/css" />
+</head>
+<body>
+	<a href="../">Back</a>
+	<h1>Canvas.DOM()</h1>
+	<script type="text/javascript">
+	new ImageManipulation.Canvas({
+		image: "images/example.png",
+		callback: function(Image){
+			Image.DOM(document.body);
+		}
+	});
+	</script>
+</body>
+</html>

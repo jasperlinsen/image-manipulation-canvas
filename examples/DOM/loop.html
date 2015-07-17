@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+	<title>imageManipulation | Init()</title>
+	<script type="text/javascript" src="../../build/imageManipulation.min.js"></script>
+	<link rel="stylesheet" href="../resources/style.css" type="text/css" />
+</head>
+<body>
+	<a href="../">Back</a>
+	<h1>Init() - Looping</h1>
+	<img src="../resources/example.png" data-manipulate="Blur(4)" class="some-class" />
+	<img src="../resources/example.png" class="some-class" />
+	<script type="text/javascript">
+		var allImages = ImageManipulation.Init('.some-class');
+		allImages.forEach(function(Image){
+			Image.Apply().Desaturate(60);
+		});
+	</script>
+</body>
+</html>

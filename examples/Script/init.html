@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+	<title>imageManipulation | Canvas.Init()</title>
+	<script type="text/javascript" src="../../build/imageManipulation.min.js"></script>
+	<link rel="stylesheet" href="../resources/style.css" type="text/css" />
+</head>
+<body>
+	<a href="../">Back</a>
+	<h1>Canvas.Init()</h1>
+	<script type="text/javascript">
+	new ImageManipulation.Canvas({
+		image: "../resources/example.png",	// Your image
+		autoUpdate: true,				// Update while making changes or only on Draw()?
+		className: 'myImageClass',		// Class you image should have
+		callback: function(Image){		// What to do when loaded
+			Image.DOM(document.body);
+		},
+		development: function(Message){	// What do do with errors
+			alert(Message);
+		}
+	});
+	</script>
+</body>
+</html>

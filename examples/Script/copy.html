@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+	<title>imageManipulation | Canvas.Copy()</title>
+	<script type="text/javascript" src="../../build/imageManipulation.min.js"></script>
+	<link rel="stylesheet" href="../resources/style.css" type="text/css" />
+</head>
+<body>
+	<a href="../">Back</a>
+	<h1>Canvas.Copy()</h1>
+	<script type="text/javascript">
+	new ImageManipulation.Canvas({
+		image: "../resources/example.png",
+		callback: function(Image){
+			Image.GrayScale().DOM(document.body);
+			Image.Copy().Reset().DOM(document.body);
+		}
+	});
+	</script>
+</body>
+</html>

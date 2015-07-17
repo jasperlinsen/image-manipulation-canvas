@@ -18,7 +18,7 @@ There are two ways you can use ImageManipulation, the easiest of which is by usi
 <img src="path/to/myImage.jpg" data-manipulate="GrayScale" />
 ``` 
 
-After this, all you need to do is call the `Init` method. Insaert the following lines before the closing `</body>` tag (make sure it is placed _after_ your inclusion of the `imageManipulation.min.js` script):
+After this, all you need to do is call the `Init` method. Insert the following lines before the closing `</body>` tag (make sure it is placed _after_ your inclusion of the `imageManipulation.min.js` script):
 
 ```javascript
 <script>ImageManipulation.Init();</script>
@@ -58,15 +58,24 @@ myImage.DOM(document.body);
 
 They are in essence the same, but the callback will only be executed when the image was successfully loaded, guaranteeing that whatever manipulations done afterwards are going to work. The syntax that omits the callback will queue any of the changes made to the object and apply them as soon as the image is loaded.
 
+Important to note is that if the `autoUpdate` option is passed as `false`, queueing will be disabled and an error will be thrown. If you use  a callback, but still run some manipulations outside of it and before the load has completed, it will also be added to the queue and executed _before_ the `callback`.
+
 After that, it is simple to chain the preferred manipulations:
 
 ```javascript
-myImage.Desaturate(50).Blur(2);
+var canvasImages = ImageManipulation.Init();
+canvasImages.forEach(function(Image){
+	Image.Desaturate(70);
+});
 ```
 
 ### Combining Both
 
 You can, however, combine both if you want to, as the `ImageManipulation.Init()` static functions returns an array of `ImageManipulation.Canvas` objects. All these support the same features as the purely javascript based ones (they are the same instances) but they default to Queuing as no `callback` can be defined in the DOM.
+
+```javascript
+
+```
 
 ## Initialiser Options
 
@@ -77,12 +86,12 @@ Path to the image.
 
 ### callback
 _[Function]_
-Path to the image.
+Path to the image. Receives 1 argument containing the ImageManipulation.Canvas
 **DOM-based:** Uses either `data-src` or `src` attribute in DOM element.
 
 ### development
 _[Function || throw]_
-Function to pass error messages to. Defaults to `throw`
+Function to pass error messages to. Defaults to `throw`. Receives 1 argument containing the message string.
 **DOM-based:** Will only `throw` errors.
 
 ### className 
@@ -123,8 +132,8 @@ gets called automatically. Initialises all values and resources.`Draw()`.
 Returns a new copy of this instance.
 **DOM-based:** Not available.
 
-### Draw()	 -> this 
-Update the canvas.
+### Draw([source:Bool])	 -> this 
+Update the canvas. Pass source as boolean to draw the source canvas.
 **DOM-based:** Not available.
 
 ### Apply()	 -> this 
