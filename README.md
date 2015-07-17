@@ -112,23 +112,23 @@ Set if you want to image to automatically update upon changes or only when calli
 ## ImageManipulation.Canvas Manipulations
 
 ### Blur  
-`Blur([radius:Int:n%2=0.canvas]) -> this`  
-Blurs the image by the given radius.
+`Blur([radius:Int:n%2=0]) -> this`  
+Blurs the image by the given radius.  
 **DOM-based:** `data-attribute="Blur(radius)"`
 
 ### GrayScale  
 `GrayScale([forHumans:Bool]) -> this`  
-Desaturate the image 100% (equals `Desaturate(100)`). Pass `forHumans` to adjust the graytones to be more palatable for the human eye (more green, less red and blue).
+Desaturate the image 100% (equals `Desaturate(100)`). Pass `forHumans` to adjust the graytones to be more palatable for the human eye (more green, less red and blue).  
 **DOM-based:** `data-attribute="GrayScale"`
 
 ### Desaturate  
 `Desaturate(amount:Int:0<n<100) -> this`  
-Equalise the r,g,b values by the passed percentage based amount.
+Equalise the r,g,b values by the passed percentage based amount.  
 **DOM-based:** `data-attribute="Desaturate(amount)"`
 
 ### Channel  
 `Channel(channel:String:=r||g||b||a) -> void`  
-Only display one of the color channels.
+Only display one of the color channels.  
 **DOM-based:** `data-attribute="Channel(r)"`
 
 ## ImageManipulation.Canvas Core Functions
