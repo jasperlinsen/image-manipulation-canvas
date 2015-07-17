@@ -7,14 +7,13 @@
 </head>
 <body>
 	<script type="text/javascript">
-	new ImageManipulation({
+	var myImage = new ImageManipulation.Canvas({
 		image: "images/example.png",
 		className: "image-manipulation",
-		callback: function(Image){
-			Image.GrayScale().DOM(document.body);
-			Image.Copy().Reset().DOM(document.body);
-		}
+		autoUpdate: true
 	});
+	myImage.DOM(document.body);
+	myImage.GrayScale();
 	</script>
 </body>
 </html>
