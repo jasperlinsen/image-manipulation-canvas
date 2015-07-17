@@ -73,10 +73,6 @@ canvasImages.forEach(function(Image){
 
 You can, however, combine both if you want to, as the `ImageManipulation.Init()` static functions returns an array of `ImageManipulation.Canvas` objects. All these support the same features as the purely javascript based ones (they are the same instances) but they default to Queuing as no `callback` can be defined in the DOM.
 
-```javascript
-
-```
-
 ## Initialiser Options
 
 ### image
