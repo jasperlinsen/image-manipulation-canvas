@@ -124,38 +124,47 @@ Only display one of the color channels.
 
 ## ImageManipulation.Canvas Core Functions
 
-### Init([copy:Imagemanipulation.canvas]) -> void
-gets called automatically. Initialises all values and resources.`Draw()`.
+### Init  
+Init([copy:Imagemanipulation.canvas]) -> void  
+gets called automatically. Initialises all values and resources.`Draw()`.  
 **DOM-based:** Automatically called.
 
-### Copy()	 -> ImageManipulation 
-Returns a new copy of this instance.
+### Copy  
+Copy()	 -> ImageManipulation  
+Returns a new copy of this instance.  
 **DOM-based:** Not available.
 
-### Draw([source:Bool])	 -> this 
-Update the canvas. Pass source as boolean to draw the source canvas.
+### Draw  
+Draw([source:Bool])	 -> this  
+Update the canvas. Pass source as boolean to draw the source canvas.  
 **DOM-based:** Not available.
 
-### Apply()	 -> this 
-Save the changes to the source (does not update the file, just the source of the instance).
+### Apply  
+Apply()	 -> this  
+Save the changes to the source (does not update the file, just the source of the instance).  
 **DOM-based:** Not available.
 
-### Reset()	 -> this 
-Reset any changes to the source.
+### Reset()	 -> this  
+Reset()	 -> this  
+Reset any changes to the source.  
 **DOM-based:** Not available.
 
-### DOM([element:<domElement>])	 -> Bool?<canvas>
-Append the canvas element to the passed element and return `true` _or_ returns the canvas element is no element is passed.
+### Dom  
+DOM([element:< domElement >])	 -> Bool?< canvas >  
+Append the canvas element to the passed element and return `true` _or_ returns the canvas element is no element is passed.  
 **DOM-based:** Not available.
 
-### Throw(message:String)	 -> this
-Internal error reporting function.
+### Throw  
+Throw(message:String)	 -> this  
+Internal error reporting function.  
 **DOM-based:** Not available.
 
-### Warn(message:String)	 -> this
-Internal warning reporting function.
+### Warn  
+Warn(message:String)	 -> this  
+Internal warning reporting function.  
 **DOM-based:** Not available.
 
-### isReady([callee:String, withArguments:arguments?Array])	 -> Bool
-Returns true if ready, false when not. If callee is included, that function name will be added to the queue and executed with the myArguments when the queue gets executed.
+### isReady  
+isReady([callee:String, withArguments:arguments?Array])	 -> Bool  
+Returns true if ready, false when not. If callee is included, that function name will be added to the queue and executed with the myArguments when the queue gets executed.  
 **DOM-based:** Not available.
