@@ -7,7 +7,7 @@ ImageManipulation is a simple Javascript library that can be used to manipulate 
 First of, you will have to include the `imageManipulation.min.js` file. You can do this either in your `<head>` tag or just before the closing `</body>` tag.
 
 ```html
-    <script type="text/javascript" src="build/imageManipulation.min.js"></script>
+<script type="text/javascript" src="build/imageManipulation.min.js"></script>
 ```
 
 ### Using DOM elements
@@ -15,24 +15,25 @@ First of, you will have to include the `imageManipulation.min.js` file. You can 
 There are two ways you can use ImageManipulation, the easiest of which is by using the DOM itself to designate elements to be changed by adding a `data-manipulate` attribute to them.
 
 ```html
-    <img src="path/to/myImage.jpg" data-manipulate="GrayScale" />
+<img src="path/to/myImage.jpg" data-manipulate="GrayScale" />
 ``` 
 
 After this, all you need to do is call the `Init` method. Insaert the following lines before the closing `</body>` tag (make sure it is placed _after_ your inclusion of the `imageManipulation.min.js` script):
 
 ```javascript
-    <script>ImageManipulation.Init();</script>
+<script>ImageManipulation.Init();</script>
 ```
 
 You can add multiple manipulations (applied in order of appearance) by adding more data-manipulate attributes to your element, appending a `-n`:
 
 ```html
-    <img src="path/to/myImage.jpg" data-manipulate="GrayScale" data-manipulate-2="Desaturate(50)" />
-    
+<img src="path/to/myImage.jpg" data-manipulate="GrayScale" data-manipulate-2="Desaturate(50)" />
+```
+
 Passing arguments is the same as calling a function, just include the arguments in between `(` and `)`. Use your console to see if errors are thrown, and check out the documentation below to see what functions are available. If you want to use an alternative resource (if, for example, you want to use a loading image that gets replaced by a high-resolution one), use the `data-src` attribute to assign a different source. If no `data-src` is found, it will look for `src`, if that is not found, the script will ignore the element.
 
 ```html
-    <img src="path/to/loader.gif" data-src="path/to/highResImage.jpg" data-manipulate="GrayScale" data-manipulate-2="Desaturate(50)" />
+<img src="path/to/loader.gif" data-src="path/to/highResImage.jpg" data-manipulate="GrayScale" data-manipulate-2="Desaturate(50)" />
 ```
 
 ### Using Javascript
@@ -40,19 +41,19 @@ Passing arguments is the same as calling a function, just include the arguments 
 With Javascript, you get a lot more versatility. You have the choice of two basic syntaxes. There is one with a callback:
 
 ```javascript
-	var myImage = new ImageManipulation.Canvas({
-		image: "path/to/image.jpg",
-		callback: function(Image){
-			Image.DOM(document.body);
-		}
-	});
+var myImage = new ImageManipulation.Canvas({
+	image: "path/to/image.jpg",
+	callback: function(Image){
+		Image.DOM(document.body);
+	}
+});
 ```
 
 And one without a callback: 
 
 ```javascript
-	var myImage = new ImageManipulation.Canvas({image: "path/to/image.jpg",});
-	myImage.DOM(document.body);
+var myImage = new ImageManipulation.Canvas({image: "path/to/image.jpg",});
+myImage.DOM(document.body);
 ```
 
 They are in essence the same, but the callback will only be executed when the image was successfully loaded, guaranteeing that whatever manipulations done afterwards are going to work. The syntax that omits the callback will queue any of the changes made to the object and apply them as soon as the image is loaded.
@@ -60,7 +61,7 @@ They are in essence the same, but the callback will only be executed when the im
 After that, it is simple to chain the preferred manipulations:
 
 ```javascript
-	myImage.Desaturate(50).Blur(2);
+myImage.Desaturate(50).Blur(2);
 ```
 
 ### Combining Both
