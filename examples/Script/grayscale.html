@@ -1,19 +1,19 @@
 <!doctype html>
 <html>
 <head>
-	<title>imageManipulation | Canvas.Channel()</title>
+	<title>imageManipulation | Canvas.GrayScale()</title>
 	<script type="text/javascript" src="../../build/imageManipulation.min.js"></script>
 	<link rel="stylesheet" href="../resources/style.css" type="text/css" />
 </head>
 <body>
 	<a href="../">Back</a>
-	<h1>Canvas.Channel()</h1>
+	<h1>Canvas.GrayScale()</h1>
 	<script type="text/javascript" id="script">var Image;
 	
 Image = new ImageManipulation.Canvas({image: "../resources/example.png"});
 	
 Image.DOM(document.body);
-Image.Channel('r');</script>
+Image.GrayScale(true);</script>
 	<script type="text/javascript">
 	var br = document.createElement('br');
 		document.body.appendChild(br);
@@ -22,27 +22,23 @@ Image.Channel('r');</script>
 		input.style.width = "200px";
 		document.body.appendChild(input);
 	var option = document.createElement('option');
-		option.setAttribute('value','r');
+		option.setAttribute('value','grayscale');
+		option.text = "GrayScale";
+		input.appendChild(option);
+	var option = document.createElement('option');
+		option.setAttribute('value','forHumans');
 		option.setAttribute('selected','true');
-		option.text = "red";
+		option.text = "GrayScale for Human Perception";
 		input.appendChild(option);
 	var option = document.createElement('option');
-		option.setAttribute('value','g');
-		option.text = "green";
-		input.appendChild(option);
-	var option = document.createElement('option');
-		option.setAttribute('value','b');
-		option.text = "blue";
-		input.appendChild(option);
-	var option = document.createElement('option');
-		option.setAttribute('value','a');
-		option.text = "alpha";
+		option.setAttribute('value','none');
+		option.text = "No GrayScale";
 		input.appendChild(option);
 		
 		input.addEventListener('change', function(event){
 			Image.Reset();
-			Image.Channel(input.value);
-			//Image.Draw(true);
+			if(input.value === 'forHumans') Image.GrayScale(true);
+			else if(input.value === 'grayscale') Image.GrayScale();
 		});
 	</script>
 	<script type="text/javascript" src="../resources/code.js"></script>

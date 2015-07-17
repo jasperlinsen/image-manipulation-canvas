@@ -8,18 +8,17 @@
 <body>
 	<a href="../">Back</a>
 	<h1>Canvas.Init()</h1>
-	<script type="text/javascript">
-	new ImageManipulation.Canvas({
-		image: "../resources/example.png",	// Your image
-		autoUpdate: true,				// Update while making changes or only on Draw()?
-		className: 'myImageClass',		// Class you image should have
-		callback: function(Image){		// What to do when loaded
-			Image.DOM(document.body);
-		},
-		development: function(Message){	// What do do with errors
-			alert(Message);
-		}
-	});
-	</script>
+	<script type="text/javascript" id="script">new ImageManipulation.Canvas({
+	image: "../resources/example.png",	// Your image
+	autoUpdate: true,				// Update while making changes or only on Draw()?
+	className: 'myImageClass',		// Class you image should have
+	callback: function(Image){		// What to do when loaded
+		Image.DOM(document.body);
+	},
+	development: function(Message){	// What to do with errors
+		alert(Message);
+	}
+});</script>
+	<script type="text/javascript" src="../resources/code.js"></script>
 </body>
 </html>

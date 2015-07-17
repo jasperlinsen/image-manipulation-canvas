@@ -1,5 +1,42 @@
-a:first-child {
+body {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body > a:first-of-type {
+	display: block;
 	float: left;
 	width: 40px;
 	height: 40px;
+	border: 1px solid #000;
+	border-radius: 50%;
+	margin-right: 10px;
+	text-indent: -999999px;
+	position: relative;
+}
+
+body > a:first-of-type:before, body > a:first-of-type:after {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 35%;
+	top: 50%;
+	width: 30%;
+	height: 1px;
+	background: #000;
+	-webkit-transform-origin: bottom left;
+	transform-origin: bottom left;
+	-webkit-transform: rotateZ(-45deg);
+	transform: rotateZ(-45deg);
+}
+body > a:first-of-type:before {
+	-webkit-transform-origin: top left;
+	transform-origin: top left;
+	-webkit-transform: rotateZ(45deg);
+	transform: rotateZ(45deg);
+}
+
+pre {
+	background: #ececec;
+	font-family: 'Monaco', 'Courier', sans-serif;
+	padding: 20px;
 }

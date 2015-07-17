@@ -1,20 +1,19 @@
 <!doctype html>
 <html>
 <head>
-	<title>imageManipulation | Canvas.Desaturate()</title>
+	<title>imageManipulation | Canvas.Blur()</title>
 	<script type="text/javascript" src="../../build/imageManipulation.min.js"></script>
 	<link rel="stylesheet" href="../resources/style.css" type="text/css" />
 </head>
 <body>
 	<a href="../">Back</a>
-	<h1>Canvas.Desaturate()</h1>
+	<h1>Canvas.Blur()</h1>
 	<script type="text/javascript" id="script">var Image;
 	
 Image = new ImageManipulation.Canvas({image: "../resources/example.png"});
 	
-Image.Desaturate(50);
 Image.DOM(document.body);
-	</script>
+Image.Blur(2);</script>
 	<script type="text/javascript">
 	var br = document.createElement('br');
 		document.body.appendChild(br);
@@ -23,8 +22,9 @@ Image.DOM(document.body);
 		input.style.width = "200px";
 		input.setAttribute('type','range');
 		input.setAttribute('max',100);
-		input.setAttribute('min',0);
-		input.setAttribute('value',50);
+		input.setAttribute('min',2);
+		input.setAttribute('step',2);
+		input.setAttribute('value',2);
 		document.body.appendChild(input);
 	var br = document.createElement('br');
 		document.body.appendChild(br);
@@ -33,12 +33,19 @@ Image.DOM(document.body);
 		value.setAttribute('disabled','true');
 		value.style.width = "200px";
 		value.setAttribute('id','value');
-		value.setAttribute('value','50');
+		value.setAttribute('value','2');
 		document.body.appendChild(value);
+	var curValue = 2;
 		input.addEventListener('change', function(event){
-			Image.Reset();
-			Image.Desaturate(input.value);
-			value.value = input.value;
+			if(input.value < 6 || (input.value > 6 && confirm('Large values take longer to calculate. Do you want to apply this change?'))){
+				Image.Reset();
+				Image.Blur(input.value);
+				value.value = input.value;
+				curValue = input.value;
+			} else {
+				input.value = curValue;
+				value.value = curValue;
+			}
 		});
 	</script>
 	<script type="text/javascript" src="../resources/code.js"></script>

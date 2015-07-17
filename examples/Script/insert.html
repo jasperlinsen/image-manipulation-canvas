@@ -8,13 +8,12 @@
 <body>
 	<a href="../">Back</a>
 	<h1>Canvas.DOM()</h1>
-	<script type="text/javascript">
-	new ImageManipulation.Canvas({
-		image: "images/example.png",
-		callback: function(Image){
-			Image.DOM(document.body);
-		}
-	});
-	</script>
+	<script type="text/javascript" id="script">new ImageManipulation.Canvas({
+	image: "../resources/example.png",
+	callback: function(Image){
+		Image.DOM(document.body);
+	}
+});</script>
+	<script type="text/javascript" src="../resources/code.js"></script>
 </body>
 </html>
