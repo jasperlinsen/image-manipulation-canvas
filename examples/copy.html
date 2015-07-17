@@ -1,0 +1,20 @@
+<html>
+<head>
+	<script type="text/javascript" src="../src/imageManipulation.js"></script>
+	<style type="text/css">
+		canvas { width: 50px; }
+	</style>
+</head>
+<body>
+	<script type="text/javascript">
+	new ImageManipulation({
+		image: "images/example.png",
+		className: "image-manipulation",
+		callback: function(Image){
+			Image.GrayScale().DOM(document.body);
+			Image.Copy().Reset().DOM(document.body);
+		}
+	});
+	</script>
+</body>
+</html>
