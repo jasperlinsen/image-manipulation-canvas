@@ -84,96 +84,96 @@ canvasImages.forEach(function(Image){
 
 ## Initialiser Options
 
-### image
+#### image
 `[String, !required]`  
 Path to the image.  
 **DOM-based:** Uses either `data-src` or `src` attribute in DOM element.
 
-### callback
+#### callback
 `[Function]`  
 Path to the image. Receives 1 argument containing the ImageManipulation.Canvas
 **DOM-based:** Uses either `data-src` or `src` attribute in DOM element.
 
-### development  
+#### development  
 `[Function || throw]`  
 Function to pass error messages to. Defaults to `throw`. Receives 1 argument containing the message string.  
 **DOM-based:** Will only `throw` errors.
 
-### className  
+#### className  
 `[String]`  
 Define classes that the canvas should inherit.  
 **DOM-based:** Defaults to classes applied to DOM element.
 
-### autoUpdate
+#### autoUpdate
 `[Bool || true]`  
 Set if you want to image to automatically update upon changes or only when calling `Draw()`.  
 **DOM-based:** Cannot be changed DOM based.
 
 ## ImageManipulation.Canvas Manipulations
 
-### Blur  
+#### Blur  
 `Blur([radius:Int:n%2=0]) -> this`  
 Blurs the image by the given radius.  
 **DOM-based:** `data-attribute="Blur(radius)"`
 
-### GrayScale  
+#### GrayScale  
 `GrayScale([forHumans:Bool]) -> this`  
 Desaturate the image 100% (equals `Desaturate(100)`). Pass `forHumans` to adjust the graytones to be more palatable for the human eye (more green, less red and blue).  
 **DOM-based:** `data-attribute="GrayScale"`
 
-### Desaturate  
+#### Desaturate  
 `Desaturate(amount:Int:0<n<100) -> this`  
 Equalise the r,g,b values by the passed percentage based amount.  
 **DOM-based:** `data-attribute="Desaturate(amount)"`
 
-### Channel  
+#### Channel  
 `Channel(channel:String:=r||g||b||a) -> void`  
 Only display one of the color channels.  
 **DOM-based:** `data-attribute="Channel(r)"`
 
 ## ImageManipulation.Canvas Core Functions
 
-### Init  
+#### Init  
 `Init([copy:Imagemanipulation.canvas]) -> void`  
 gets called automatically. Initialises all values and resources.`Draw()`.  
 **DOM-based:** Automatically called.
 
-### Copy  
+#### Copy  
 `Copy()	 -> ImageManipulation`  
 Returns a new copy of this instance.  
 **DOM-based:** Not available.
 
-### Draw  
+#### Draw  
 `Draw([source:Bool])	 -> this`  
 Update the canvas. Pass source as boolean to draw the source canvas.  
 **DOM-based:** Not available.
 
-### Apply  
+#### Apply  
 `Apply()	 -> this`  
 Save the changes to the source (does not update the file, just the source of the instance).  
 **DOM-based:** Not available.
 
-### Reset   
+#### Reset   
 `Reset()	 -> this`  
 Reset any changes to the source.  
 **DOM-based:** Not available.
 
-### Dom  
+#### Dom  
 `DOM([element:<domElement>])	 -> Bool?<canvas>`  
-Append the canvas element to the passed element and return `true` _or_ returns the canvas element is no element is passed.  
+Append the canvas element to the passed element and return `true` _or_ returns the canvas element if no element is passed.  
 **DOM-based:** Not available.
 
-### Throw  
+#### Throw  
 `Throw(message:String)	 -> this`  
 Internal error reporting function.  
 **DOM-based:** Not available.
 
-### Warn  
+#### Warn  
 `Warn(message:String)	 -> this`  
 Internal warning reporting function.  
 **DOM-based:** Not available.
 
-### isReady  
+#### isReady  
 `isReady([callee:String, withArguments:arguments?Array])	 -> Bool`  
 Returns true if ready, false when not. If callee is included, that function name will be added to the queue and executed with the myArguments when the queue gets executed.  
 **DOM-based:** Not available.
