@@ -177,3 +177,21 @@ Internal warning reporting function.
 `isReady([callee:String, withArguments:arguments?Array])	 -> Bool`  
 Returns true if ready, false when not. If callee is included, that function name will be added to the queue and executed with the myArguments when the queue gets executed.  
 **DOM-based:** Not available.
+
+## ImageManipulation.Canvas Beta Functions
+
+As this library will keep expanding, some features pushed might not be fully tested yet. The following functions have working implementations, but are not fully checked yet and don't have a great deal of utility. These features are trying to pave the path for future implementations.
+
+#### BrightnessScale  
+`BrightnessScale(treshold:Int:0-255,angle:Int:0-359) 	-> this`  
+Find gradient map at certain angle and display in B/W.  
+**DOM-based:** `data-attribute="BrightnessScale(treshold, angle)"`
+
+#### BrightnessScaleMapper  
+`BrightnessScaleMapper(treshold:Int:0-255) 	-> Array`  
+Finds and returns gradient map at four angles (0,45,90,180). The returned array is structured as followed: `pixelId => (angle => brightnessDifference[, angle => brightnessDifference, ...])`  
+**DOM-based:** Not available.
+
+## ImageManipulation.Canvas Support Functions
+
+Support function are smaller functions and never return `this`. They are used internally by functions, and should rarely be accessed from outside. On `Init`, the Support functions object gets assigned `this` to the `Self`, so any usual operations can be done use `this.Self`. The support functions are not listed here, but check out the source to find out more about them.

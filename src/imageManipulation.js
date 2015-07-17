@@ -343,6 +343,92 @@ ImageManipulation.Canvas.prototype = {
 		if(this.autoUpdate) this.Draw();
 		return this;
 	},
+	/* Custom(fn:Function)		 -> this
+	 * Execute cutstom drawing function. Cannot be called before ready. */
+	Custom: function(fn){
+		if(!this.isReady()){
+			this.Throw('Cannot queue Custom function. Only use in callback.');
+			return this;
+		}
+		try {
+			fn.bind(this)();
+		} catch(e){
+			this.Throw(e);
+		}
+		return this;
+	},
+	
+	
+	
+	/***********************************************************/
+	/********************** Beta Functions *********************/
+	/***********************************************************/
+	
+	/* BrightnessScale(treshold:Int:0-255,angle:Int:0-359) 	-> this
+	 * Find gradient map at certain angle and display in B/W. */
+	BrightnessScale: 	function(treshold, angle){
+		
+		this.Warn("BrightnessScale is under development! Use at your own risk.");
+		
+		if(!this.isReady('BrightnessScale', arguments)) return;
+	
+		if(!treshold || isNaN(treshold) || treshold > 255 || treshold < 0)
+			return this.Throw("BrightnessScale @param treshold:Int[0-255] is required.");
+	
+		if(!treshold || isNaN(angle) || angle > 359 || angle < 0)
+			return this.Throw("BrightnessScale @param angle:Int[0-359] is required.");
+		
+		var Self = this;
+		
+		// Convert to GrayScale
+		this.GrayScale(true);
+		
+		var map = this.Support.BrightnessMap([], treshold, angle, function(sudden, id){
+			if(sudden === true){
+				Self.resource.data[id * 4] = 0;
+				Self.resource.data[id * 4 + 1] = 0;
+				Self.resource.data[id * 4 + 2] = 0;
+				Self.resource.data[id * 4 + 3] = 255;
+			} else if(sudden === false){
+				Self.resource.data[id * 4] = 255;
+				Self.resource.data[id * 4 + 1] = 255;
+				Self.resource.data[id * 4 + 2] = 255;
+				Self.resource.data[id * 4 + 3] = 255;
+			} else {
+				Self.resource.data[id * 4] = 255;
+				Self.resource.data[id * 4 + 1] = 255;
+				Self.resource.data[id * 4 + 2] = 255;
+				Self.resource.data[id * 4 + 3] = 255;
+			}
+		});
+		
+		//console.log(map);
+		
+		if(Self.autoUpdate) Self.Draw();
+		
+		return this;
+	},
+	/* BrightnessScaleMapper(treshold:Int:0-255) 	-> Array
+	 * Finds and returns gradient map four angles (0,45,90,180). */
+	BrightnessScaleMapper: function(treshold){
+		
+		this.Warn("BrightnessScaleMapper is under development! Use at your own risk.");
+		
+		if(!this.isReady('BrightnessScaleMapper', arguments)) return;
+	
+		if(!treshold || isNaN(treshold) || treshold > 255 || treshold < 0)
+			return this.Throw("BrightnessScaleMapper @param treshold:Int[0-255] is required.");
+		
+		var map = {};
+		
+		this.Support.BrightnessMap(map, treshold, 0);
+		this.Support.BrightnessMap(map, treshold, 45);
+		this.Support.BrightnessMap(map, treshold, 90);
+		this.Support.BrightnessMap(map, treshold, 180);
+		
+		return map;
+		
+	},
 	
 	
 	/***********************************************************/
@@ -351,6 +437,47 @@ ImageManipulation.Canvas.prototype = {
 	
 	Support: {
 		Self: false,
+		/* getPixelFromOffset(offset:Int) 	-> Int
+		 * Get ID of the pixel by passing it the Uint8ClampedArray offset. */
+		getPixelIdFromOffset: 	function(offset){
+			return offset / 4;
+		},
+		/* getPixelOffsetFromId(id:Int) 	-> Int
+		 * Get offset of the pixel by passing it the id. */
+		getPixelOffsetFromId: 	function(id){
+			return id * 4;
+		},
+		/* getPixelFromOffset(offset:Int[, fromResource:Bool]) 	-> [r,g,b,a]
+		 * Get the r,g,b,a values from pixel bassed on Uint8ClampedArray offset. */
+		getPixelFromOffset: 	function(offset, fromResource){
+			if(fromResource) return [Self.resource.data[offset],Self.resource.data[offset+1],Self.resource.data[offset+2],Self.resource.data[offset+3]];
+			else return [Self.source.data[offset],Self.source.data[offset+1],Self.source.data[offset+2],Self.source.data[offset+3]];
+		},
+		/* getPixelFromOffset(id:Int[, fromResource:Bool]) 	-> [r,g,b,a]
+		 * Get the r,g,b,a values from pixel bassed on the id. */
+		getPixelFromId: 		function(id, fromResource){
+			return this.getPixelFromOffset(this.getPixelOffsetFromId(id), fromResource);
+		},
+		/* setPixelWithOffset(offset:Int, rgba:[r,g,b,a][, inResource:Bool]) -> Bool
+		 * Set the r,g,b,a values from pixel bassed on the Uint8ClampedArray offset. */
+		setPixelWithOffset: 	function(offset, rgba, inResource){
+			if(inResource){
+				for(var i = 0; i < 4; i++){
+					Self.resource.data[offset + i] = rgba[i];
+				}
+			} else {
+				for(var i = 0; i < 4; i++){
+					Self.source.data[offset + i] = rgba[i];
+				}
+			}
+		},
+		/* setPixelWithId(id:Int[, fromResource:Bool]) 	-> [r,g,b,a]
+		 * Set the r,g,b,a values from pixel bassed on the id. */
+		setPixelWithId: 		function(id, rgba, inResource){
+			this.setPixelWithOffset(this.getPixelOffsetFromId(id), rgba, inResource);
+		},
+		/* getPixelAtAxisFromPixel(id:Int, angle:Int:n%45=0]) 	-> Int
+		 * Get the id of the pixel at the cardinal direction from the passed pixel. */
 		getPixelAtAxisFromPixel: function(id, angle){
 			var add, angle, addLine, Self;
 			Self = this.Self || {width: 0};
@@ -358,7 +485,7 @@ ImageManipulation.Canvas.prototype = {
 			if(angle%45) Self.Warn("getPixelAtAxisFromPixel @angle:Int[45*n] converted to Axis");
 			angle = Math.round(angle / 45) * 45;
 			switch(angle){
-				case 0:	 add = 1; break;
+				case 0:	 	add = 1; break;
 				case 45:	add = Self.width + 1; break;
 				case 90:	add = Self.width; break;
 				case 135:   add = Self.width - 1; break;
@@ -373,11 +500,61 @@ ImageManipulation.Canvas.prototype = {
 			// Check whether there is a linedifference of more than 2 (edge-case)
 			id = Math.floor(id / Self.width);
 			addLine = Math.floor(add / Self.width);
-			if(addLine < id-1 || addLine > id+1){
+			var linedifference = id - addLine;
+			if(linedifference < -2 || linedifference > 2){
 				return false;
 			} else {
 				return add;
 			}
+		},
+		/* BrightnessMap(id:Int, angle:Int:n%45=0]) 	-> Array
+		 * Returns or amends the passed array with brightness change values that are over (or under) the treshold. */
+		BrightnessMap:	function(map, treshold, angle, callback){
+			
+			if(!this.Self)
+				throw("Support.Self undefined. Error on Init()?");
+			else var Self = this.Self;
+			
+			if(!map) 		map = new Array();
+			if(!callback) 	callback = function(){};
+	
+			if(!treshold || isNaN(treshold) || treshold > 255 || treshold < 0)
+				return Self.Throw("BrightnessMap @param treshold:Int[0-255] is required.");
+	
+			if(!treshold || isNaN(angle) || angle > 359 || angle < 0)
+				return this.Throw("BrightnessMap @param angle:Int[0-359] is required.");
+		
+			Self.GrayScale(true);
+			
+			var id = 0;
+			
+			for(var p = 0; p < Self.source.data.length; p += 4){
+			
+				var atAngle = Self.Support.getPixelAtAxisFromPixel(id, angle);
+				
+				id++;
+				
+				if(!atAngle || atAngle < 0) continue;
+				else atAngle *= 4;
+				var difference 		= Self.source.data[atAngle] - Self.source.data[p];
+				var suddenChange 	= !(difference < treshold && difference > -treshold);
+				if(
+					atAngle && !suddenChange
+				){
+					callback(false, id);
+				} else if(atAngle && suddenChange){
+				
+					if(!map[id]) map[id] = {};
+					
+					map[id][angle] = difference;
+					
+					callback(true, id);
+					
+				} else {
+					callback(null, id);
+				}
+			}
+			return map;
 		}
 	}
 	
