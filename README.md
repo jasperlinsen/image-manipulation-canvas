@@ -182,6 +182,8 @@ Returns true if ready, false when not. If callee is included, that function name
 
 As this library expands, some features pushed might not be fully tested yet. The following functions have working implementations, but are not checked and don't have a great deal of utility. These features are trying to pave the path for future implementations.
 
+**Beta functions are not necessarily in the final build yet. Beta functions will also warn you that they are beta: 'Function is under development! Use at your own risk.'**
+
 #### BrightnessScale  
 `BrightnessScale(treshold:Int:0-255,angle:Int:0-359) 	-> this`  
 Find gradient map at certain angle and display in B/W.  
