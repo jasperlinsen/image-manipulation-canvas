@@ -23,11 +23,11 @@ var ImageManipulation = {
 		this.width			= options.width 	|| 0;
 		this.height			= options.height 	|| 0;
 		this.className		= options.className || '';
-		this.input		  = document.createElement('canvas');
-		this.output		 = document.createElement('canvas');
+		this.input		  	= document.createElement('canvas');
+		this.output		 	= document.createElement('canvas');
 		this.inputContext   = this.input.getContext('2d');
 		this.outputContext  = this.output.getContext('2d');
-		this.ready		  = false;
+		this.ready		  	= false;
 		this.queue			= [];
 		
 		/* options.development:Func - defaults to 'throw'. */
@@ -44,7 +44,7 @@ var ImageManipulation = {
 		/* Manipulation should be done on resource after Init() */
 		this.resource	   = false;
 		/* options.development:Func - defaults to 'throw'. */
-		this.autoUpdate	  = options.autoUpdate || false;
+		this.autoUpdate	  = options.autoUpdate || true;
 	
 		// Call the initialiser / set up call to initialiser
 		if(options.image){
@@ -71,9 +71,12 @@ var ImageManipulation = {
 		for(var i = 0; i < elements.length; i++){
 			var element, src;
 			var element = elements.item(i);
-			var src		= element.getAttribute("src") || element.getAttribute("data-src");
+			var src		= element.getAttribute("data-src") || element.getAttribute("src") || false;
+			var className = element.getAttribute("className") || '';
+			if(!src) continue;
 			result.push(new ImageManipulation.Canvas({
 				image: src,
+				className: className,
 				callback: function(Image){
 					element.parentNode.insertBefore(Image.DOM(), element);
 					element.parentNode.removeChild(element);
@@ -112,7 +115,7 @@ ImageManipulation.Canvas.prototype = {
 	/***********************************************************/
 	/********************** Core Functions *********************/
 	/***********************************************************/
-	/* Init()	 -> void
+	/* Init([Imagemanipulation.canvas])	 -> void
 	 * gets called automatically. Initialises all values and resources. */
 	Init:		function(copy){
 		
@@ -123,13 +126,13 @@ ImageManipulation.Canvas.prototype = {
 			copy = false;
 		}
 		
-		this.width		   = copy.width  		|| this.image.width;
-		this.height		  = copy.height 		|| this.image.height;
-		this.input.width	 = copy.width  		|| this.width;
-		this.input.height	= copy.height 		|| this.height;
-		this.output.width	= copy.width  		|| this.width;
-		this.output.height   = copy.height 		|| this.height;
-		this.className   	 = copy.className 	|| this.className;
+		this.width		   		= copy.width  		|| this.image.width;
+		this.height		  		= copy.height 		|| this.image.height;
+		this.input.width	 	= copy.width  		|| this.width;
+		this.input.height		= copy.height 		|| this.height;
+		this.output.width		= copy.width  		|| this.width;
+		this.output.height   	= copy.height 		|| this.height;
+		this.output.className   = copy.className 	|| this.className;
 		
 		if(this.image){
 			this.inputContext	.drawImage(this.image, 0, 0);
@@ -153,7 +156,7 @@ ImageManipulation.Canvas.prototype = {
 		}
 		if(!copy) this.callback(this);
 	},
-	/* Draw()	 -> ImageManipulation 
+	/* Copy()	 -> ImageManipulation 
 	 * return a copy of this instance. */
 	Copy:		function(){
 		return new ImageManipulation.Canvas({copy: this});
@@ -182,7 +185,7 @@ ImageManipulation.Canvas.prototype = {
 		if(this.autoUpdate) this.Draw();
 		return this;
 	},
-	/* DOM(element?:<dom>)	 -> <canvas>
+	/* DOM(element?:<dom>)	 -> Bool?<canvas>
 	 * returns the <canvas> DOM element or appends it to the passed element. */
 	DOM:		function(element){
 		this.Draw();
@@ -195,14 +198,14 @@ ImageManipulation.Canvas.prototype = {
 			return this.output;
 		}
 	},
-	/* Throw(message:String) -> this?
+	/* Throw(message:String) -> this
 	 * internal error reporting function. */
 	Throw:		function(message){
 		if(this.development === 'throw') throw(message);
 		else this.development(message);
 		return this;
 	},
-	/* Warn(message:String) -> this?
+	/* Warn(message:String) -> this
 	 * internal warning reporting function. */
 	Warn:		function(message){
 		if(console && console.log) console.log(message);
